@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Mathew.pl</title>
+  <link rel="icon" href="imgshort.png" type="image/png">
+    <link rel="shortcut icon" href="imgshort.png" type="image/png">
+  <style>
+    /* Style CSS */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+      color: white;
+    }
+    h1 {
+      color: white;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    input[type="number"] {
+      padding: 8px;
+      width: 150px;
+    }
+    button {
+      padding: 8px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    canvas {
+        max-width: 300px;
+      max-height: 300px; 
+      margin-top: 30px;
+      border: 1px solid white;
+    }
+
+    body {background-image:url("tło.jpg");
+    background-attachment: fixed;
+    }
+  </style>
+</head>
+<body>
+    
+  <h1>Obliczanie twierdzenia Pitagorasa</h1>
+  <div class="input-group">
+    <label for="sideA">Długość boku a:</label>
+    <input type="number" id="sideA" placeholder="Podaj długość boku a" step="any" required>
+  </div>
+
+  <div class="input-group">
+    <label for="sideB">Długość boku b:</label>
+    <input type="number" id="sideB" placeholder="Podaj długość boku b" step="any" required>
+  </div>
+
+  <button onclick="calculatePythagorean()">Oblicz</button>
+  <div id="result"></div>
+
+  <canvas id="pythagoreanChart" width="400" height="400"></canvas>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Skrypt JavaScript
+
+    function calculatePythagorean() {
+      const sideA = parseFloat(document.getElementById('sideA').value);
+      const sideB = parseFloat(document.getElementById('sideB').value);
+
+      if (!sideA || !sideB) {
+        alert('Wprowadź poprawne wartości dla obu boków!');
+        return;
+      }
+
+      const sideC = Math.sqrt(Math.pow(sideA, 2) + Math.pow(sideB, 2));
+      document.getElementById('result').innerText = `Długość boku c: ${sideC.toFixed(2)}`;
+
+      displayPythagoreanChart(sideA, sideB, sideC);
+    }
+
+    function displayPythagoreanChart(a, b, c) {
+      const ctx = document.getElementById('pythagoreanChart').getContext('2d');
+      const pythagoreanChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Bok a', 'Bok b', 'Bok c'],
+          datasets: [{
+            label: 'Długości boków trójkąta',
+            data: [a, b, c],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.6)',
+              'rgba(54, 162, 235, 0.6)',
+              'rgba(255, 206, 86, 0.6)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

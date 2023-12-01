@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Mathew.pl</title>
+  <link rel="icon" href="imgshort.png" type="image/png">
+    <link rel="shortcut icon" href="imgshort.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+      color: white;
+    }
+    h1 {
+      color: white;
+    }
+    .input-group {
+      margin-bottom: 10px;
+    }
+    input[type="number"], input[type="text"] {
+      padding: 8px;
+      width: 150px;
+    }
+    button {
+      padding: 8px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    body {background-image:url("tło.jpg");
+    background-attachment: fixed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Obliczanie zużycia paliwa przez samolot</h1>
+  <div class="input-group">
+    <label for="aircraftWeight">Masa samolotu (kg):</label>
+    <input type="number" id="aircraftWeight" placeholder="Wprowadź masę samolotu" required>
+  </div>
+
+  <div class="input-group">
+    <label for="windSpeed">Prędkość wiatru (km/h):</label>
+    <input type="number" id="windSpeed" placeholder="Wprowadź prędkość wiatru" required>
+  </div>
+
+  <div class="input-group">
+    <label for="distance">Odległość (km):</label>
+    <input type="number" id="distance" placeholder="Wprowadź odległość" required>
+  </div>
+
+  <button onclick="calculateFuelConsumption()">Oblicz</button>
+  <div id="result"></div>
+
+  <script>
+
+    function calculateFuelConsumption() {
+      const aircraftWeight = parseFloat(document.getElementById('aircraftWeight').value);
+      const windSpeed = parseFloat(document.getElementById('windSpeed').value);
+      const distance = parseFloat(document.getElementById('distance').value);
+
+      if (!aircraftWeight || !windSpeed || !distance) {
+        alert('Wprowadź poprawne wartości dla wszystkich pól!');
+        return;
+      }
+      const fuelConsumption = ((aircraftWeight / 100) * (windSpeed / 10)) + (distance * 0.2);
+      document.getElementById('result').innerText = `Zużycie paliwa przez samolot: ${fuelConsumption.toFixed(2)} litrów`;
+    }
+  </script>
+</body>
+</html>

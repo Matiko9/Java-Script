@@ -1,0 +1,121 @@
+<!--This is a bookmark 
+  file that I plan to introduce in the next 
+  update, but it still needs some refinement-->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mathew.pl</title>
+  <link rel="icon" href="imgshort.png" type="image/png">
+    <link rel="shortcut icon" href="imgshort.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    body {background-image:url("tło.jpg");
+    background-attachment: fixed;
+    }
+    header {
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      margin-bottom: 20px;
+    }
+
+    .add-post textarea {
+      width: calc(100% - 20px);
+      height: 100px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+
+    .add-post button {
+      padding: 10px 20px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-post button:hover {
+      background-color: #555;
+    }
+
+    .comments ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .comments li {
+      margin-bottom: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Strona z wpisami i komentarzami</h1>
+  </header>
+
+  <main>
+    <section class="add-post">
+      <h2>Dodaj nowy wpis</h2>
+      <form id="post-form">
+        <textarea id="post-content" placeholder="Treść wpisu" required></textarea>
+        <br>
+        <button type="submit">Dodaj wpis</button>
+      </form>
+    </section>
+
+    <section class="comments">
+      <h2>Komentarze</h2>
+      <ul id="comments-list">
+        <!-- Lista komentarzy będzie wyświetlana tutaj -->
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('post-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const postContent = document.getElementById('post-content').value;
+
+      const newPost = document.createElement('li');
+      newPost.textContent = postContent;
+
+      const postsList = document.getElementById('comments-list');
+      postsList.appendChild(newPost);
+
+      document.getElementById('post-content').value = '';
+    });
+  </script>
+</body>
+</html>

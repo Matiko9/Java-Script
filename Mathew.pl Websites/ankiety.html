@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mathew.pl</title>
+  <link rel="icon" href="imgshort.png" type="image/png">
+    <link rel="shortcut icon" href="imgshort.png" type="image/png">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    input[type="submit"] {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 12px;
+      margin-top: -8px;
+      margin-bottom: 10px;
+    }
+    body {background-image:url("tło.jpg");
+    background-attachment: fixed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Zaawansowany Formularz</h2>
+    <form id="advancedForm" onsubmit="return saveToFile()">
+      <div class="form-group">
+        <label for="name">Imię i nazwisko:</label>
+        <input type="text" id="name" name="name" placeholder="Jan Kowalski" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Adres e-mail:</label>
+        <input type="email" id="email" name="email" placeholder="jan.kowalski@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="age">Wiek:</label>
+        <input type="number" id="age" name="age" min="1" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Wiadomość:</label>
+        <textarea id="message" name="message" rows="4" placeholder="Wpisz swoją wiadomość..." required></textarea>
+      </div>
+      <input type="submit" value="Zapisz do pliku">
+    </form>
+    <div id="validationMsg"></div>
+  </div>
+
+  <script>
+    function saveToFile() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const age = document.getElementById('age').value;
+      const message = document.getElementById('message').value;
+      const validationMsg = document.getElementById('validationMsg');
+
+      validationMsg.innerHTML = '';
+
+      if (name.trim() === '' || email.trim() === '' || age.trim() === '' || message.trim() === '') {
+        validationMsg.innerHTML = '<p class="error-message">Proszę wypełnić wszystkie pola.</p>';
+        return false;
+      }
+
+      const dataToSave = `Imię i nazwisko: ${name}\nAdres e-mail: ${email}\nWiek: ${age}\nWiadomość: ${message}`;
+
+      const blob = new Blob([dataToSave], { type: 'text/plain' });
+
+      const downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(blob);
+      downloadLink.setAttribute('download', 'dane_uzytkownika.txt');
+      downloadLink.click();
+
+      return true;
+    }
+  </script>
+</body>
+</html>

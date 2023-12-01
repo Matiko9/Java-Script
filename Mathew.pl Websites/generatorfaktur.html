@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="imgshort.png" type="image/png">
+    <link rel="shortcut icon" href="imgshort.png" type="image/png">
+  <title>Mathew.pl</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    body {background-image:url("tło.jpg");
+    background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="number"],
+    button {
+      padding: 10px;
+      margin-bottom: 15px;
+      width: calc(100% - 22px);
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    #invoiceResult {
+      margin-top: 20px;
+    }
+
+    textarea {
+      width: calc(100% - 22px);
+      height: 150px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      resize: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Generator faktur</h1>
+    <form id="invoiceForm">
+      <label for="companyName">Firma wykonująca:</label>
+      <input type="text" id="companyName" name="companyName" required>
+
+      <label for="clientName">Nazwa klienta:</label>
+      <input type="text" id="clientName" name="clientName" required>
+      
+      <label for="invoiceDate">Data faktury:</label>
+      <input type="date" id="invoiceDate" name="invoiceDate" required>
+      
+      <label for="item">Opis produktu/usługi:</label>
+      <input type="text" id="item" name="item" required>
+      
+      <label for="amount">Kwota:</label>
+      <input type="number" id="amount" name="amount" min="0" step="0.01" required>
+
+      <label for="advance">Zaliczka:</label>
+      <input type="number" id="advance" name="advance" min="0" step="0.01">
+
+      <label for="workDate">Dzień wykonania:</label>
+      <input type="date" id="workDate" name="workDate">
+
+      <label for="paymentDue">Termin zapłaty:</label>
+      <input type="date" id="paymentDue" name="paymentDue">
+
+      <button type="submit">Generuj fakturę</button>
+    </form>
+    
+    <div id="invoiceResult" style="display: none;">
+      <h2>Wygenerowana faktura:</h2>
+      <textarea id="generatedInvoice" readonly></textarea>
+      <button onclick="downloadInvoice()">Pobierz fakturę</button>
+    </div>
+  </div>
+  
+  <script>
+    document.getElementById('invoiceForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const companyName = document.getElementById('companyName').value;
+      const clientName = document.getElementById('clientName').value;
+      const invoiceDate = document.getElementById('invoiceDate').value;
+      const item = document.getElementById('item').value;
+      const amount = document.getElementById('amount').value;
+      const advance = document.getElementById('advance').value;
+      const workDate = document.getElementById('workDate').value;
+      const paymentDue = document.getElementById('paymentDue').value;
+
+      let generatedInvoice = `Firma wykonująca: ${companyName}\nKlient: ${clientName}\nData faktury: ${invoiceDate}\nOpis: ${item}\nKwota: ${amount} zł`;
+
+      if (advance) {
+        generatedInvoice += `\nZaliczka: ${advance} zł`;
+      }
+
+      if (workDate) {
+        generatedInvoice += `\nDzień wykonania: ${workDate}`;
+      }
+
+      if (paymentDue) {
+        generatedInvoice += `\nTermin zapłaty: ${paymentDue}`;
+      }
+      
+      document.getElementById('invoiceResult').style.display = 'block';
+      document.getElementById('generatedInvoice').value = generatedInvoice;
+    });
+
+    function downloadInvoice() {
+      const invoiceContent = document.getElementById('generatedInvoice').value;
+      const currentDate = new Date().toISOString().slice(0, 10);
+
+      const invoiceDate = document.getElementById('invoiceDate').value;
+      const clientName = document.getElementById('clientName').value;
+
+      const fileName = `Faktura_${invoiceDate}_${clientName}.txt`;
+
+      const blob = new Blob([invoiceContent], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

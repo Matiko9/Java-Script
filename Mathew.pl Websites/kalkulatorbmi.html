@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mathew.pl</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="icon" href="imgshort.png" type="image/png">
+    <link rel="shortcut icon" href="imgshort.png" type="image/png">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f9f9f9;
+    }
+
+    .container {
+      width: 80%;
+      max-width: 600px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    input[type="number"],
+    select {
+      width: calc(100% - 16px);
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      margin-top: 6px;
+    }
+
+    button {
+      padding: 12px 24px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      color: #333;
+    }
+
+    #chartContainer {
+      margin-top: 20px;
+      max-height: 200px;
+    }
+
+    canvas {
+      max-height: 150px;
+    }
+    body {background-image:url("tło.jpg");
+    background-attachment: fixed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kalkulator BMI</h1>
+    <form id="bmiForm">
+      <div class="form-group">
+        <label for="gender">Płeć:</label>
+        <select id="gender" name="gender">
+          <option value="male">Mężczyzna</option>
+          <option value="female">Kobieta</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="age">Wiek:</label>
+        <input type="number" id="age" name="age" min="1" max="150">
+      </div>
+      <div class="form-group">
+        <label for="weight">Waga (kg):</label>
+        <input type="number" id="weight" name="weight" min="1">
+      </div>
+      <div class="form-group">
+        <label for="height">Wzrost (cm):</label>
+        <input type="number" id="height" name="height" min="1">
+      </div>
+      <button type="button" onclick="calculateBMI()">Oblicz BMI</button>
+    </form>
+    <div id="result"></div>
+    <div style="overflow: hidden; max-height: 200px;">
+      <canvas id="chartContainer"></canvas>
+    </div>
+  </div>
+  <script>
+    function calculateBMI() {
+      const gender = document.getElementById('gender').value;
+      const age = parseFloat(document.getElementById('age').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value) / 100; 
+
+      if (age && weight && height) {
+        const bmi = weight / (height * height);
+        displayResult(bmi);
+
+        const ctx = document.getElementById('chartContainer').getContext('2d');
+        const chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['BMI'],
+            datasets: [{
+              label: 'BMI',
+              data: [bmi],
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 5,
+                  callback: function(value, index, values) {
+                    return value.toFixed(1);
+                  }
+                }
+              }
+            },
+            plugins: {
+              annotation: {
+                annotations: [{
+                  type: 'line',
+                  mode: 'horizontal',
+                  scaleID: 'y',
+                  value: 18.5,
+                  borderColor: 'green',
+                  borderWidth: 2,
+                  label: {
+                    enabled: true,
+                    content: 'Niedowaga (BMI < 18.5)'
+                  }
+                }, {
+                  type: 'line',
+                  mode: 'horizontal',
+                  scaleID: 'y',
+                  value: 24.9,
+                  borderColor: 'yellow',
+                  borderWidth: 2,
+                  label: {
+                    enabled: true,
+                    content: 'Waga prawidłowa (18.5 <= BMI < 24.9)'
+                  }
+                }, {
+                  type: 'line',
+                  mode: 'horizontal',
+                  scaleID: 'y',
+                  value: 29.9,
+                  borderColor: 'orange',
+                  borderWidth: 2,
+                  label: {
+                    enabled: true,
+                    content: 'Nadwaga (24.9 <= BMI < 29.9)'
+                  }
+                }, {
+                  type: 'line',
+                  mode: 'horizontal',
+                  scaleID: 'y',
+                  value: 34.9,
+                  borderColor: 'red',
+                  borderWidth: 2,
+                  label: {
+                    enabled: true,
+                    content: 'Otyłość (BMI >= 30)'
+                  }
+                }]
+              }
+            }
+          }
+        });
+      } else {
+        alert('Proszę uzupełnić wszystkie dane.');
+      }
+    }
+
+    function displayResult(bmiValue) {
+      let result = '';
+      if (bmiValue < 18.5) {
+        result = 'Niedowaga';
+      } else if (bmiValue < 24.9) {
+        result = 'Waga prawidłowa';
+      } else if (bmiValue < 29.9) {
+        result = 'Nadwaga';
+      } else {
+        result = 'Otyłość';
+      }
+
+      document.getElementById('result').innerHTML = `Twoje BMI wynosi: ${bmiValue.toFixed(2)} (${result})`;
+    }
+  </script>
+</body>
+</html>

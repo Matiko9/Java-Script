@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Mathew.pl</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="imgshort.png" type="image/png">
+    <link rel="shortcut icon" href="imgshort.png" type="image/png">
+</head>
+<body>
+  <nav>
+    <a class="menu active" href="index.html">Me</a>
+    <a class="menu" href="Help.html">Help & Functions</a>
+    <a class="menu" href="Memories.html">Memories</a>
+    <a class="menu" href="Photo.html">Photo</a>
+    <a class="menu" href="Hobby.html">Hobby</a>
+    <a class="menu" href="Spain.html">Spain</a>
+    <a class="menu" href="Poland.html">Poland</a>
+    <a class="menu" href="Granada.html">Granada</a>
+  </nav>
+
+  <section id="home" class="section">
+    <div class="content">
+      <h1>Welcome to my website!</h1>
+      <p>Here you will find information about me.</p>
+    </div>
+  </section>
+  <section id="about">
+    <h2>Next Update</h2>
+    <p>Translation of the website into other languages: Polish, Spanish, English.</p>
+    <p>And many more cool features :)</p>
+</section>
+
+<div class="countdown-card">
+  <h1>Next Update</h1>
+  <div class="countdown-timer" id="timer">Pozostało czasu</div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const countdownTimer = document.getElementById("timer");
+
+    function countdown() {
+      const endDate = new Date("December 8, 2023 17:00:00").getTime();
+      const now = new Date().getTime();
+      let timeLeft = endDate - now;
+
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        countdownTimer.innerHTML = "Minęło";
+        return;
+      }
+
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      countdownTimer.innerHTML = ` ${days} dni, ${hours} godzin, ${minutes} minut, ${seconds} sekund`;
+    }
+
+    countdown();
+    const timerInterval = setInterval(countdown, 1000);
+  });
+</script>
+  <footer>Update 30.11.2023</footer>
+  <script src="script.js" async defer></script>
+</body>
+</html>
